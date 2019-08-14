@@ -1,0 +1,14 @@
+function Test-PackageProvider {
+    Write-Host "Check if NuGet is available as a package provider..."
+    $(Get-PackageProvider -Name "NuGet" -ErrorAction SilentlyContinue)
+}
+
+if(!(Test-PackageProvider)){
+    Write-Host "Copying NuGet provider files into place..."
+    Copy-Item "{{ pkg.path }}/bin/*" "C:\Program Files\PackageManagement\ProviderAssemblies" -Force -Recurse
+    Import-PackageProvider -Name "NuGet"
+    if(!(Test-PackageProvider)){
+        Write-Host "NuGet provider failed to install..."
+        exit 1
+    }
+}
