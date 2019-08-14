@@ -2,6 +2,12 @@ function Test-PackageProvider {
     Write-Host "Check if NuGet is available as a package provider..."
     Import-PackageProvider -Name "NuGet"
     $(Get-PackageProvider -Name "NuGet" -ErrorAction SilentlyContinue)
+    if($Error -ne $null){
+        return $false
+    }
+    else{
+        Write-Host "NuGet is already available as a package provider"
+    }
 }
 
 if(!(Test-PackageProvider)){
